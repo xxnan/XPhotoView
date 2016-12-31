@@ -1,7 +1,9 @@
 package com.vanke.xphotoview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,17 +17,20 @@ import java.util.List;
 public class ChangeLine extends ViewGroup {
     private static final int LEFT=0;
     private static final int RIGHT=1;
-    private int orientation=RIGHT;
+    private int orientation=LEFT;
     public ChangeLine(Context context) {
         super(context);
+//        init(context, null);
     }
 
     public ChangeLine(Context context, AttributeSet attrs) {
         super(context, attrs);
+//        init(context, attrs);
     }
 
     public ChangeLine(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+//        init(context, attrs);
     }
 
     @Override
@@ -33,6 +38,24 @@ public class ChangeLine extends ViewGroup {
         return new MarginLayoutParams(getContext(), attrs);
     }
 
+    /**
+     * if you want use this method,you must create styles.xml and define
+     *  <declare-styleable name="direction">
+        <attr name="direct" format="integer" />
+        </declare-styleable>
+     * @param context
+     * @param attrs
+     */
+    private void init(Context context, AttributeSet attrs)
+    {
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.direction);
+        int direct = ta.getInteger(R.styleable.direction_direct, -1);
+        if(direct==0)
+            orientation=LEFT;
+        else
+            orientation=RIGHT;
+        ta.recycle();
+    }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
